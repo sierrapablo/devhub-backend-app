@@ -1,12 +1,41 @@
-import express from "express";
+import express from 'express';
+import dotenv from 'dotenv';
+import cors from 'cors';
+import { errorHandler } from '@/middlewares/errorHandler';
 
-const app = express();
+/**
+ * Importación de rutas
+ */
+import healthRoutes from '@/modules/health/health.routes';
+
+/**
+ * Host config
+ */
+dotenv.config();
+const host = process.env.HOST ? String(process.env.HOST) : '0.0.0.0';
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
+const prefix = process.env.API_PREFIX ? String(process.env.API_PREFIX) : '';
 
-app.get("/", (_req, res) => {
-  res.send("OK");
-});
+/**
+ * Creación de Express App
+ */
+const app = express();
 
-app.listen(port, () => {
-  console.log(`Listening on port ${port}`);
+/**
+ * Middlewares
+ */
+app.use(errorHandler);
+app.use(cors());
+app.use(express.json());
+
+/**
+ * Rutas
+ */
+app.use(`${prefix}/health`, healthRoutes);
+
+/**
+ * Runtime
+ */
+app.listen(port, host, () => {
+  console.log(`Server running on http://${host}:${port}`);
 });
