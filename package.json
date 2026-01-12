@@ -1,6 +1,6 @@
 {
   "name": "devhub-backend-app",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "type": "module",
   "description": "API REST del proyecto DevHub",
   "main": "index.js",
