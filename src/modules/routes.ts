@@ -1,3 +1,3 @@
-import * as healthModule from '@/modules/health';
+import { healthRoutes } from '@/modules/health';
 
-export const apiModules = [{ path: 'health', routes: healthModule.healthRoutes }];
+export const apiModules = [{ path: 'health', routes: healthRoutes }];
