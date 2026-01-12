@@ -48,7 +48,7 @@ const corsOptions = {
  */
 app.use(cors(corsOptions));
 app.use(express.json());
-app.use(helmet({ contentSecurityPolicy: false }));
+app.use(helmet({ contentSecurityPolicy: false })); // CSP deshabilitado porque la API no sirve HTML. Se considera seguro en este contexto.
 
 
 /**
