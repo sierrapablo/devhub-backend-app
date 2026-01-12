@@ -19,6 +19,15 @@ const prefix = process.env.API_PREFIX ? String(process.env.API_PREFIX) : '';
 const app = express();
 
 /**
+ * Validación de variables críticas
+ */
+if (!process.env.JWT_SECRET) {
+  console.error('ERROR: JWT_SECRET not defined in .env');
+  process.exit(1);
+}
+export const JWT_SECRET: string = process.env.JWT_SECRET;
+
+/**
  * CORS Config
  */
 const allowedOriginsEnv = process.env.CORS_ORIGIN ?? '';

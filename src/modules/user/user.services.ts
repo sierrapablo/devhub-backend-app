@@ -2,6 +2,7 @@ import { prisma } from '@/lib/prisma/client';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import type { UserAuth } from '@/modules/user/user.types';
+import { JWT_SECRET } from '@/index';
 
 export const loginService = async (email: string, password: string): Promise<UserAuth> => {
   const user = await prisma.user.findUnique({
@@ -23,7 +24,7 @@ export const loginService = async (email: string, password: string): Promise<Use
 
   if (!isPasswordValid || !user.active || !user.verified) throw new Error(loginError);
 
-  const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET!, {
+  const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, {
     expiresIn: '1h',
   });
 
