@@ -3,11 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import helmet from 'helmet';
 import { errorHandler } from '@/middlewares/errorHandler';
-
-/**
- * Importación de rutas
- */
-import healthRoutes from '@/modules/health/health.routes';
+import { apiModules } from '@/modules/routes';
 
 /**
  * Host config
@@ -56,7 +52,9 @@ app.use(helmet({ contentSecurityPolicy: false })); // CSP deshabilitado porque l
 /**
  * Rutas
  */
-app.use(`${prefix}/health`, healthRoutes);
+apiModules.forEach((module) => {
+  app.use(`${prefix}/${module.path}`, module.routes);
+});
 
 /**
  * Manejador de errores
