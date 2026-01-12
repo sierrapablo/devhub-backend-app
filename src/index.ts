@@ -26,14 +26,17 @@ const app = express();
  * CORS Config
  */
 const allowedOriginsEnv = process.env.CORS_ORIGIN ?? '';
-const allowedOrigins = allowedOriginsEnv.split(',').map(o => o.trim()).filter(Boolean);
+const allowedOrigins = new Set(
+  allowedOriginsEnv.split(',').map(o => o.trim()).filter(Boolean)
+);
+
 const corsOptions = {
   origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
     if (!origin) {
       // Permite requests desde herramientas como Postman o servidores
       return callback(null, true);
     }
-    if (allowedOrigins.includes(origin)) {
+    if (allowedOrigins.has(origin)) {
       return callback(null, true);
     }
     callback(new Error(`CORS: Origin ${origin} forbidden`));
