@@ -54,7 +54,9 @@ app.use(helmet({ contentSecurityPolicy: false })); // CSP deshabilitado porque l
  */
 apiModules.forEach((module) => {
   app.use(`${prefix}/${module.path}`, module.routes);
+  console.log(`${prefix}/${module.path}`)
 });
+console.log('Routes successfully loaded.')
 
 /**
  * Manejador de errores
