@@ -1,3 +1,3 @@
-import healthRoutes from './health.routes';
+import healthRoutes from '@/modules/health/health.routes';
 
 export { healthRoutes };
