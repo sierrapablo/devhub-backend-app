@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import * as healthService from '@/modules/health/health.service';
+import * as healthService from '@/modules/health/health.services';
 
 /**
  * Get Health Status
