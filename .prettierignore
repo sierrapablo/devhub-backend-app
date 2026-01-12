@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.github/
+.vscode/
+docs/
+prisma/
+*.config.js
+*.config.mjs
+*.config.ts
+*.json
+*.md
+*.yaml
+.env
+.gitattributes
+.gitignore
+LICENSE
