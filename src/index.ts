@@ -27,7 +27,10 @@ const app = express();
  */
 const allowedOriginsEnv = process.env.CORS_ORIGIN ?? '';
 const allowedOrigins = new Set(
-  allowedOriginsEnv.split(',').map(o => o.trim()).filter(Boolean)
+  allowedOriginsEnv
+    .split(',')
+    .map((o) => o.trim())
+    .filter(Boolean),
 );
 
 const corsOptions = {
@@ -49,7 +52,6 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(helmet({ contentSecurityPolicy: false })); // CSP deshabilitado porque la API no sirve HTML. Se considera seguro en este contexto.
-
 
 /**
  * Rutas
