@@ -9,8 +9,9 @@ export const pingDB = async (): Promise<Health> => {
     });
     if (!check) throw new Error('No health record found');
     return {
+      queryDate: new Date(),
       status: check.status ? 'OK' : 'KO',
-      date: check.date,
+      checkDate: check.date,
       appVersion: version,
       databaseVersion: check.id,
     };
