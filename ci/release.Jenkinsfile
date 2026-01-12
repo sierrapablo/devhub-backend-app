@@ -8,6 +8,7 @@ pipeline {
   environment {
     GIT_USER_NAME = 'Jenkins CI'
     GIT_USER_EMAIL = 'jenkins[bot]@noreply.jenkins.io'
+    REPOSITORY_NAME = 'devhub-backend-app'
   }
 
   stages {
@@ -139,7 +140,7 @@ pipeline {
               curl -X POST \
                 -H "Authorization: token ${GITHUB_PAT}" \
                 -H "Accept: application/vnd.github+json" \
-                https://api.github.com/repos/sierrapablo/portfolio-web/releases \
+                https://api.github.com/repos/sierrapablo/${REPOSITORY_NAME}/releases \
                 -d @release.json
             """
             sh 'rm -f changes.txt release.json'
