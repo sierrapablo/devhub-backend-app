@@ -45,6 +45,29 @@ export class UserService {
       },
     });
 
+    const jwtSecret = process.env.JWT_SECRET;
+    if (!jwtSecret) {
+      // Esto es "config bug" del server, no del usuario
+      throw new Error('JWT_SECRET not defined in .env');
+    }
+
+    const webhookUrl = process.env.N8N_WEBHOOK_EMAIL_URL;
+    if (!webhookUrl) {
+      throw new Error('N8N_WEBHOOK_EMAIL_URL not defined in .env');
+    }
+
+    const verificationToken = jwt.sign({ id: user.id, email: user.email }, jwtSecret, {
+      expiresIn: '24h',
+    });
+
+    await axios.post(webhookUrl, {
+      id: user.id,
+      email: user.email,
+      username: user.username,
+      token: verificationToken,
+      verified: false,
+    });
+
     return user;
   }
 
