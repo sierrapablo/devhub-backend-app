@@ -1,14 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@/lib/prisma/prisma.service';
 import { version } from '@root/package.json';
-
-export type Health = {
-  queryDate: Date;
-  status: 'OK' | 'KO';
-  checkDate: Date;
-  appVersion: string;
-  databaseVersion: number | string;
-};
+import type { Health } from './health.types';
 
 @Injectable()
 export class HealthService {
