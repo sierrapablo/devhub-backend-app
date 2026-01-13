@@ -4,6 +4,11 @@ import { HealthModule } from '@/modules/health/health.module';
 import { UserModule } from './modules/user/user.module';
 
 @Module({
-  imports: [PrismaModule, HealthModule, UserModule],
+  imports: [
+    PrismaModule,
+    HealthModule,
+    UserModule
+  ],
 })
+
 export class AppModule {}
