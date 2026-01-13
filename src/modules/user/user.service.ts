@@ -1,8 +1,8 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { PrismaService } from '@/lib/prisma/prisma.service';
+import { PrismaService } from '#src/lib/prisma/prisma.service.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import type { UserAuth } from './user.types';
+import type { UserAuth } from '#src/modules/user/user.types.js';
 
 @Injectable()
 export class UserService {

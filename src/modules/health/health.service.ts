@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '@/lib/prisma/prisma.service';
-import { version } from '@root/package.json';
-import type { Health } from './health.types';
+import { PrismaService } from '#src/lib/prisma/prisma.service.js';
+import config from '#root/package.json' with { type: 'json' };
+import type { Health } from '#src/modules/health/health.types.js';
 
+const version: string = config.version;
 @Injectable()
 export class HealthService {
   constructor(private readonly prisma: PrismaService) {}

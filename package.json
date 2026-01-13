@@ -1,6 +1,7 @@
 {
   "name": "devhub-backend-app",
   "version": "0.1.1",
+  "type": "module",
   "description": "API REST del proyecto DevHub",
   "main": "main.js",
   "scripts": {
@@ -13,6 +14,9 @@
   "author": "Pablo Sierra Lorente",
   "license": "MIT",
   "packageManager": "pnpm@10.27.0",
+  "imports": {
+    "#src/*": "./dist/*"
+  },
   "dependencies": {
     "@nestjs/common": "^11.1.11",
     "@nestjs/core": "^11.1.11",
