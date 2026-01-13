@@ -45,7 +45,11 @@
   "depcheck": {
     "ignoreMatches": [
       "@root/*",
-      "@/*"
+      "@/*",
+      "prettier",
+      "ts-node",
+      "ts-node-dev",
+      "tsx"
     ]
   }
 }
