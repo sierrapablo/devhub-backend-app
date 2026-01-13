@@ -1,12 +1,46 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '#src/lib/prisma/prisma.service.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import type { UserAuth } from '#src/modules/user/user.types.js';
+import type { UserAuth, UserPublic } from '#src/modules/user/user.types.js';
 
 @Injectable()
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
+
+  async createUser(username: string, email: string, password: string): Promise<UserPublic> {
+    const existingUser = await this.prisma.user.findFirst({
+      select: {
+        id: true,
+      },
+      where: {
+        OR: [{ email }, { username }],
+      },
+    });
+
+    if (existingUser) {
+      throw new ConflictException('User already exists.');
+    }
+
+    const passwordHash = await bcrypt.hash(password, 10);
+
+    const user = await this.prisma.user.create({
+      data: {
+        username,
+        email,
+        password: passwordHash,
+      },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        active: true,
+        verified: true,
+      },
+    });
+
+    return user;
+  }
 
   async login(email: string, password: string): Promise<UserAuth> {
     const user = await this.prisma.user.findUnique({
@@ -32,7 +66,7 @@ export class UserService {
 
     const jwtSecret = process.env.JWT_SECRET;
     if (!jwtSecret) {
-      // Esto es “config bug” del server, no del usuario
+      // Esto es "config bug" del server, no del usuario
       throw new Error('JWT_SECRET not defined in .env');
     }
 
