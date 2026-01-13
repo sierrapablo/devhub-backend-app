@@ -17,8 +17,8 @@ async function bootstrap() {
         .filter(Boolean)
     : undefined;
 
-  app.enableCors({origin: corsOrigins ?? true});
-  app.use(helmet({contentSecurityPolicy: false,}));
+  app.enableCors({ origin: corsOrigins ?? true });
+  app.use(helmet({ contentSecurityPolicy: false }));
 
   app.useGlobalPipes(
     new ValidationPipe({
