@@ -10,8 +10,15 @@ async function bootstrap() {
   const prefix = process.env.API_PREFIX ? String(process.env.API_PREFIX) : '';
   if (prefix) app.setGlobalPrefix(prefix.replace(/^\//, ''));
 
-  app.enableCors();
-  app.use(helmet());
+  const corsOrigins = process.env.CORS_ORIGIN
+    ? String(process.env.CORS_ORIGIN)
+        .split(',')
+        .map((origin) => origin.trim())
+        .filter(Boolean)
+    : undefined;
+
+  app.enableCors({ origin: corsOrigins ?? true });
+  app.use(helmet({ contentSecurityPolicy: false }));
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -23,4 +30,8 @@ async function bootstrap() {
 
   await app.listen(Number(process.env.PORT) || 3000, process.env.HOST || '0.0.0.0');
 }
-bootstrap();
+
+bootstrap().catch((error) => {
+  console.error(error);
+  process.exit(1);
+});
