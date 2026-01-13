@@ -16,7 +16,7 @@ model User {
   password     String
 
   active       Boolean             @default(true)
-  verified     Boolean?
+  verified     Boolean             @default(false)
 
   @@map("user")
 }
