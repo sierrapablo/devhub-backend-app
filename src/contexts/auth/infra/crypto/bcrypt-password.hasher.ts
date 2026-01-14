@@ -4,11 +4,11 @@ import type { PasswordHasher } from '#src/contexts/user/application/ports/passwo
 
 @Injectable()
 export class BcryptPasswordHasher implements PasswordHasher {
-  async hash(plain: string): Promise<string> {
-    return bcrypt.hash(plain, 10);
+  async hash(value: string): Promise<string> {
+    return bcrypt.hash(value, 10);
   }
 
-  async compare(plain: string, hash: string): Promise<boolean> {
-    return bcrypt.compare(plain, hash);
+  async compare(value: string, hash: string): Promise<boolean> {
+    return bcrypt.compare(value, hash);
   }
 }

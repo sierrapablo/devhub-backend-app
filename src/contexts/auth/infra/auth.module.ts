@@ -10,12 +10,20 @@ import {
   TOKEN_HASHER,
   TOKEN_SERVICE,
 } from '#src/contexts/auth/application/ports/tokens.js';
+import {
+  PASSWORD_HASHER,
+  VERIFICATION_TOKEN_SERVICE,
+  VERIFICATION_WEBHOOK,
+} from '#src/contexts/user/application/ports/tokens.js';
 import { RefreshTokenEntity } from '#src/contexts/auth/infra/typeorm/refresh-token.entity.js';
 import { TypeOrmRefreshTokenRepository } from '#src/contexts/auth/infra/typeorm/refresh-token.repository.js';
 import { JwtTokenService } from '#src/contexts/auth/infra/jwt/jwt-token.service.js';
 import { BcryptTokenHasher } from '#src/contexts/auth/infra/crypto/bcrypt-token-hasher.js';
 import { AuthController } from '#src/contexts/auth/infra/http/auth.controller.js';
+import { N8nWebhookClient } from '#src/contexts/auth/infra/webhooks/n8n-webhook.client.js';
 import { UserModule } from '#src/contexts/user/infra/user.module.js';
+import { JwtVerificationTokenService } from '#src/contexts/auth/infra/jwt/verification-token.service.js';
+import { BcryptPasswordHasher } from '#src/contexts/auth/infra/crypto/bcrypt-password.hasher.js';
 
 @Module({
   imports: [TypeOrmModule.forFeature([RefreshTokenEntity]), UserModule],
@@ -29,6 +37,9 @@ import { UserModule } from '#src/contexts/user/infra/user.module.js';
     { provide: REFRESH_TOKEN_REPOSITORY, useClass: TypeOrmRefreshTokenRepository },
     { provide: TOKEN_SERVICE, useClass: JwtTokenService },
     { provide: TOKEN_HASHER, useClass: BcryptTokenHasher },
+    { provide: PASSWORD_HASHER, useClass: BcryptPasswordHasher },
+    { provide: VERIFICATION_TOKEN_SERVICE, useClass: JwtVerificationTokenService },
+    { provide: VERIFICATION_WEBHOOK, useClass: N8nWebhookClient },
   ],
 })
 export class AuthModule {}
