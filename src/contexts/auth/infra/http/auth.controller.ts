@@ -1,9 +1,13 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { Login } from '#src/contexts/auth/application/use-cases/login.js';
 import { Logout } from '#src/contexts/auth/application/use-cases/logout.js';
+import { RegisterUser } from '#src/contexts/auth/application/use-cases/register-user.js';
 import { RefreshAccessToken } from '#src/contexts/auth/application/use-cases/refresh-access-token.js';
+import { VerifyUser } from '#src/contexts/auth/application/use-cases/verify-user.js';
+import { CreateUserDto } from '#src/contexts/auth/infra/http/dto/create-user.dto.js';
 import { LoginDto } from '#src/contexts/auth/infra/http/dto/login.dto.js';
 import { RefreshTokenDto } from '#src/contexts/auth/infra/http/dto/refresh-token.dto.js';
+import { VerifyUserDto } from '#src/contexts/auth/infra/http/dto/verify-user.dto.js';
 
 @Controller('auth')
 export class AuthController {
@@ -11,7 +15,14 @@ export class AuthController {
     private readonly loginUseCase: Login,
     private readonly refreshAccessToken: RefreshAccessToken,
     private readonly logoutUseCase: Logout,
+    private readonly registerUser: RegisterUser,
+    private readonly verifyUser: VerifyUser,
   ) {}
+
+  @Post('signup')
+  create(@Body() body: CreateUserDto) {
+    return this.registerUser.execute(body.username, body.email, body.password);
+  }
 
   @Post('login')
   login(@Body() body: LoginDto) {
@@ -26,5 +37,15 @@ export class AuthController {
   @Post('logout')
   logout(@Body() body: RefreshTokenDto) {
     return this.logoutUseCase.execute(body.refreshToken);
+  }
+
+  @Post('verify')
+  verify(@Body() body: VerifyUserDto) {
+    return this.verifyUser.execute(body.token);
+  }
+
+  @Get('verify-token')
+  verifyByToken(@Query('token') token: string) {
+    return this.verifyUser.execute(token);
   }
 }

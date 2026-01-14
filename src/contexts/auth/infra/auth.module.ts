@@ -2,7 +2,9 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Login } from '#src/contexts/auth/application/use-cases/login.js';
 import { Logout } from '#src/contexts/auth/application/use-cases/logout.js';
+import { RegisterUser } from '#src/contexts/auth/application/use-cases/register-user.js';
 import { RefreshAccessToken } from '#src/contexts/auth/application/use-cases/refresh-access-token.js';
+import { VerifyUser } from '#src/contexts/auth/application/use-cases/verify-user.js';
 import {
   REFRESH_TOKEN_REPOSITORY,
   TOKEN_HASHER,
@@ -22,6 +24,8 @@ import { UserModule } from '#src/contexts/user/infra/user.module.js';
     Login,
     RefreshAccessToken,
     Logout,
+    RegisterUser,
+    VerifyUser,
     { provide: REFRESH_TOKEN_REPOSITORY, useClass: TypeOrmRefreshTokenRepository },
     { provide: TOKEN_SERVICE, useClass: JwtTokenService },
     { provide: TOKEN_HASHER, useClass: BcryptTokenHasher },
