@@ -27,7 +27,7 @@ import { TypeOrmRefreshTokenRepository } from '#src/contexts/auth/infra/typeorm/
 import { JwtTokenService } from '#src/lib/jwt/jwt-token.service.js';
 import { BcryptTokenHasher } from '#src/lib/crypto/bcrypt-token-hasher.js';
 import { AuthController } from '#src/contexts/auth/infra/http/auth.controller.js';
-import { N8nWebhookClient } from '#src/lib/webhooks/n8n-webhook.client.js';
+import { N8nUserVerifyWebhookClient } from '#src/lib/webhooks/n8n-user-verify-webhook.client.js';
 import { UserModule } from '#src/contexts/user/infra/user.module.js';
 import { JwtVerificationTokenService } from '#src/lib/jwt/verification-token.service.js';
 import { BcryptPasswordHasher } from '#src/lib/crypto/bcrypt-password.hasher.js';
@@ -54,7 +54,7 @@ import { N8nPasswordResetWebhookClient } from '#src/lib/webhooks/n8n-password-re
     { provide: TOKEN_HASHER, useClass: BcryptTokenHasher },
     { provide: PASSWORD_HASHER, useClass: BcryptPasswordHasher },
     { provide: VERIFICATION_TOKEN_SERVICE, useClass: JwtVerificationTokenService },
-    { provide: VERIFICATION_WEBHOOK, useClass: N8nWebhookClient },
+    { provide: VERIFICATION_WEBHOOK, useClass: N8nUserVerifyWebhookClient },
     { provide: PASSWORD_RESET_TOKEN_SERVICE, useClass: JwtPasswordResetTokenService },
     { provide: PASSWORD_RESET_WEBHOOK, useClass: N8nPasswordResetWebhookClient },
   ],
