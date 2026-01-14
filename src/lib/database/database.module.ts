@@ -1,7 +1,8 @@
 import 'dotenv/config';
 import { Global, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserEntity } from '#src/lib/database/entities/user.entity.js';
+import { RefreshTokenEntity } from '#src/contexts/auth/infra/typeorm/refresh-token.entity.js';
+import { UserEntity } from '#src/contexts/user/infra/typeorm/user.entity.js';
 
 @Global()
 @Module({
@@ -9,7 +10,7 @@ import { UserEntity } from '#src/lib/database/entities/user.entity.js';
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: String(process.env.DATABASE_URL ?? ''),
-      entities: [UserEntity],
+      entities: [UserEntity, RefreshTokenEntity],
       synchronize: false,
     }),
   ],
