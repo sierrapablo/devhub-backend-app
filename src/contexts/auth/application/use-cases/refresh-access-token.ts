@@ -1,5 +1,5 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
-import { randomUUID } from 'crypto';
+import { randomUUID } from 'node:crypto';
 import type { RefreshTokenRepository } from '#src/contexts/auth/domain/refresh-token-repository.js';
 import type { TokenHasher } from '#src/contexts/auth/application/ports/token-hasher.js';
 import type { TokenService } from '#src/contexts/auth/application/ports/token-service.js';
