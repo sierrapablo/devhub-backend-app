@@ -30,4 +30,14 @@ export class TypeOrmRefreshTokenRepository implements RefreshTokenRepository {
       },
     );
   }
+
+  async revokeAllForUser(userId: string): Promise<void> {
+    await this.repository.update(
+      { userId },
+      {
+        revokedAt: new Date(),
+        replacedByTokenId: null,
+      },
+    );
+  }
 }
