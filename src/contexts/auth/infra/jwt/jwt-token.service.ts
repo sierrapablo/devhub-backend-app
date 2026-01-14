@@ -11,11 +11,9 @@ export class JwtTokenService implements TokenService {
       throw new Error('JWT_SECRET not defined in .env');
     }
 
-    return jwt.sign(
-      { sub: payload.userId, email: payload.email },
-      jwtSecret,
-      { expiresIn: ACCESS_TOKEN_TTL },
-    );
+    return jwt.sign({ sub: payload.userId, email: payload.email }, jwtSecret, {
+      expiresIn: ACCESS_TOKEN_TTL,
+    });
   }
 
   signRefreshToken(payload: { userId: string; tokenId: string }): string {
@@ -24,11 +22,9 @@ export class JwtTokenService implements TokenService {
       throw new Error('JWT_REFRESH_SECRET not defined in .env');
     }
 
-    return jwt.sign(
-      { sub: payload.userId, jti: payload.tokenId },
-      refreshSecret,
-      { expiresIn: '30d' },
-    );
+    return jwt.sign({ sub: payload.userId, jti: payload.tokenId }, refreshSecret, {
+      expiresIn: '30d',
+    });
   }
 
   verifyRefreshToken(token: string): { userId: string; tokenId: string; expiresAt: Date } {
