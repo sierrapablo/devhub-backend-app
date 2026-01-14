@@ -1,7 +1,6 @@
 import 'dotenv/config';
 import { Global, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { StatusEntity } from '#src/lib/database/entities/status.entity.js';
 import { UserEntity } from '#src/lib/database/entities/user.entity.js';
 
 @Global()
@@ -10,7 +9,7 @@ import { UserEntity } from '#src/lib/database/entities/user.entity.js';
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: String(process.env.DATABASE_URL ?? ''),
-      entities: [UserEntity, StatusEntity],
+      entities: [UserEntity],
       synchronize: false,
     }),
   ],
