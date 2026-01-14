@@ -1,14 +1,13 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { randomUUID } from 'node:crypto';
-import type { UserRepository } from '#src/contexts/user/domain/user-repository.js';
+import type { UserAuthRepository } from '#src/contexts/auth/application/ports/user-auth-repository.js';
 import type { PasswordHasher } from '#src/contexts/auth/application/ports/password-hasher.js';
 import type { RefreshTokenRepository } from '#src/contexts/auth/domain/refresh-token-repository.js';
 import type { TokenHasher } from '#src/contexts/auth/application/ports/token-hasher.js';
 import type { TokenService } from '#src/contexts/auth/application/ports/token-service.js';
 import type { AuthTokens } from '#src/contexts/auth/application/dtos/auth-tokens.js';
 import { REFRESH_TOKEN_TTL_MS } from '#src/contexts/auth/application/auth.constants.js';
-import { USER_REPOSITORY } from '#src/contexts/user/application/ports/tokens.js';
-import { PASSWORD_HASHER } from '#src/contexts/auth/application/ports/tokens.js';
+import { PASSWORD_HASHER, USER_AUTH_REPOSITORY } from '#src/contexts/auth/application/ports/tokens.js';
 import {
   REFRESH_TOKEN_REPOSITORY,
   TOKEN_HASHER,
@@ -18,8 +17,8 @@ import {
 @Injectable()
 export class Login {
   constructor(
-    @Inject(USER_REPOSITORY)
-    private readonly userRepository: UserRepository,
+    @Inject(USER_AUTH_REPOSITORY)
+    private readonly userRepository: UserAuthRepository,
     @Inject(PASSWORD_HASHER)
     private readonly passwordHasher: PasswordHasher,
     @Inject(REFRESH_TOKEN_REPOSITORY)

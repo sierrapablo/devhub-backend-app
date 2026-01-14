@@ -12,9 +12,11 @@ import {
 } from '#src/contexts/auth/application/ports/tokens.js';
 import {
   PASSWORD_HASHER,
+  USER_AUTH_REPOSITORY,
   VERIFICATION_TOKEN_SERVICE,
   VERIFICATION_WEBHOOK,
 } from '#src/contexts/auth/application/ports/tokens.js';
+import { USER_REPOSITORY } from '#src/contexts/user/application/ports/tokens.js';
 import { RefreshTokenEntity } from '#src/contexts/auth/infra/typeorm/refresh-token.entity.js';
 import { TypeOrmRefreshTokenRepository } from '#src/contexts/auth/infra/typeorm/refresh-token.repository.js';
 import { JwtTokenService } from '#src/contexts/auth/infra/jwt/jwt-token.service.js';
@@ -35,6 +37,7 @@ import { BcryptPasswordHasher } from '#src/contexts/auth/infra/crypto/bcrypt-pas
     RegisterUser,
     VerifyUser,
     { provide: REFRESH_TOKEN_REPOSITORY, useClass: TypeOrmRefreshTokenRepository },
+    { provide: USER_AUTH_REPOSITORY, useExisting: USER_REPOSITORY },
     { provide: TOKEN_SERVICE, useClass: JwtTokenService },
     { provide: TOKEN_HASHER, useClass: BcryptTokenHasher },
     { provide: PASSWORD_HASHER, useClass: BcryptPasswordHasher },
