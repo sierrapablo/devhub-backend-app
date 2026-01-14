@@ -1,7 +1,12 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import type { PasswordHasher } from '#src/contexts/auth/application/ports/password-hasher.js';
 import type { UserAuthRepository } from '#src/contexts/auth/application/ports/user-auth-repository.js';
-import { PASSWORD_HASHER, USER_AUTH_REPOSITORY } from '#src/contexts/auth/application/ports/providers.js';
+import type { RefreshTokenRepository } from '#src/contexts/auth/domain/refresh-token-repository.js';
+import {
+  PASSWORD_HASHER,
+  REFRESH_TOKEN_REPOSITORY,
+  USER_AUTH_REPOSITORY,
+} from '#src/contexts/auth/application/ports/providers.js';
 
 @Injectable()
 export class ChangePassword {
@@ -10,6 +15,8 @@ export class ChangePassword {
     private readonly userRepository: UserAuthRepository,
     @Inject(PASSWORD_HASHER)
     private readonly passwordHasher: PasswordHasher,
+    @Inject(REFRESH_TOKEN_REPOSITORY)
+    private readonly refreshTokenRepository: RefreshTokenRepository,
   ) {}
 
   async execute(userId: string, currentPassword: string, newPassword: string): Promise<void> {
@@ -27,5 +34,6 @@ export class ChangePassword {
 
     const newPasswordHash = await this.passwordHasher.hash(newPassword);
     await this.userRepository.updatePassword(user.id, newPasswordHash);
+    await this.refreshTokenRepository.revokeAllForUser(user.id);
   }
 }
