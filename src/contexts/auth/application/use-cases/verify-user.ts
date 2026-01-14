@@ -7,7 +7,7 @@ import {
   USER_AUTH_REPOSITORY,
   VERIFICATION_TOKEN_SERVICE,
   VERIFICATION_WEBHOOK,
-} from '#src/contexts/auth/application/ports/tokens.js';
+} from '#src/contexts/auth/application/ports/providers.js';
 
 @Injectable()
 export class VerifyUser {

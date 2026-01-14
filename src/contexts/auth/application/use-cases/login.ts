@@ -7,12 +7,15 @@ import type { TokenHasher } from '#src/contexts/auth/application/ports/token-has
 import type { TokenService } from '#src/contexts/auth/application/ports/token-service.js';
 import type { AuthTokens } from '#src/contexts/auth/application/dtos/auth-tokens.js';
 import { REFRESH_TOKEN_TTL_MS } from '#src/contexts/auth/application/auth.constants.js';
-import { PASSWORD_HASHER, USER_AUTH_REPOSITORY } from '#src/contexts/auth/application/ports/tokens.js';
+import {
+  PASSWORD_HASHER,
+  USER_AUTH_REPOSITORY,
+} from '#src/contexts/auth/application/ports/providers.js';
 import {
   REFRESH_TOKEN_REPOSITORY,
   TOKEN_HASHER,
   TOKEN_SERVICE,
-} from '#src/contexts/auth/application/ports/tokens.js';
+} from '#src/contexts/auth/application/ports/providers.js';
 
 @Injectable()
 export class Login {

@@ -6,7 +6,7 @@ import {
   REFRESH_TOKEN_REPOSITORY,
   TOKEN_HASHER,
   TOKEN_SERVICE,
-} from '#src/contexts/auth/application/ports/tokens.js';
+} from '#src/contexts/auth/application/ports/providers.js';
 
 @Injectable()
 export class Logout {
