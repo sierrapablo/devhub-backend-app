@@ -1,13 +1,14 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { randomUUID } from 'node:crypto';
 import type { UserRepository } from '#src/contexts/user/domain/user-repository.js';
-import type { PasswordHasher } from '#src/contexts/user/application/ports/password-hasher.js';
+import type { PasswordHasher } from '#src/contexts/auth/application/ports/password-hasher.js';
 import type { RefreshTokenRepository } from '#src/contexts/auth/domain/refresh-token-repository.js';
 import type { TokenHasher } from '#src/contexts/auth/application/ports/token-hasher.js';
 import type { TokenService } from '#src/contexts/auth/application/ports/token-service.js';
 import type { AuthTokens } from '#src/contexts/auth/application/dtos/auth-tokens.js';
 import { REFRESH_TOKEN_TTL_MS } from '#src/contexts/auth/application/auth.constants.js';
-import { PASSWORD_HASHER, USER_REPOSITORY } from '#src/contexts/user/application/ports/tokens.js';
+import { USER_REPOSITORY } from '#src/contexts/user/application/ports/tokens.js';
+import { PASSWORD_HASHER } from '#src/contexts/auth/application/ports/tokens.js';
 import {
   REFRESH_TOKEN_REPOSITORY,
   TOKEN_HASHER,

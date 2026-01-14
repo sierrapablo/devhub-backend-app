@@ -14,7 +14,7 @@ import {
   PASSWORD_HASHER,
   VERIFICATION_TOKEN_SERVICE,
   VERIFICATION_WEBHOOK,
-} from '#src/contexts/user/application/ports/tokens.js';
+} from '#src/contexts/auth/application/ports/tokens.js';
 import { RefreshTokenEntity } from '#src/contexts/auth/infra/typeorm/refresh-token.entity.js';
 import { TypeOrmRefreshTokenRepository } from '#src/contexts/auth/infra/typeorm/refresh-token.repository.js';
 import { JwtTokenService } from '#src/contexts/auth/infra/jwt/jwt-token.service.js';

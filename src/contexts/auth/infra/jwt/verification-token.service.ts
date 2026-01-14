@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import jwt from 'jsonwebtoken';
-import type { VerificationTokenService } from '#src/contexts/user/application/ports/verification-token-service.js';
+import type { VerificationTokenService } from '#src/contexts/auth/application/ports/verification-token-service.js';
 
 @Injectable()
 export class JwtVerificationTokenService implements VerificationTokenService {
