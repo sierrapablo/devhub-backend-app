@@ -4,11 +4,11 @@ import type { TokenHasher } from '#src/contexts/auth/application/ports/token-has
 
 @Injectable()
 export class BcryptTokenHasher implements TokenHasher {
-  async hash(token: string): Promise<string> {
-    return bcrypt.hash(token, 10);
+  async hash(value: string): Promise<string> {
+    return bcrypt.hash(value, 10);
   }
 
-  async compare(token: string, hash: string): Promise<boolean> {
-    return bcrypt.compare(token, hash);
+  async compare(value: string, hash: string): Promise<boolean> {
+    return bcrypt.compare(value, hash);
   }
 }

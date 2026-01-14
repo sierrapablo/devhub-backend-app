@@ -1,19 +1,19 @@
 import { Inject, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
-import type { UserRepository } from '#src/contexts/user/domain/user-repository.js';
-import type { VerificationTokenService } from '#src/contexts/user/application/ports/verification-token-service.js';
-import type { VerificationWebhook } from '#src/contexts/user/application/ports/verification-webhook.js';
+import type { UserAuthRepository } from '#src/contexts/auth/application/ports/user-auth-repository.js';
+import type { VerificationTokenService } from '#src/contexts/auth/application/ports/verification-token-service.js';
+import type { VerificationWebhook } from '#src/contexts/auth/application/ports/verification-webhook.js';
 import type { UserPublic } from '#src/contexts/user/application/dtos/user-public.js';
 import {
-  USER_REPOSITORY,
+  USER_AUTH_REPOSITORY,
   VERIFICATION_TOKEN_SERVICE,
   VERIFICATION_WEBHOOK,
-} from '#src/contexts/user/application/ports/tokens.js';
+} from '#src/contexts/auth/application/ports/providers.js';
 
 @Injectable()
 export class VerifyUser {
   constructor(
-    @Inject(USER_REPOSITORY)
-    private readonly userRepository: UserRepository,
+    @Inject(USER_AUTH_REPOSITORY)
+    private readonly userRepository: UserAuthRepository,
     @Inject(VERIFICATION_TOKEN_SERVICE)
     private readonly tokenService: VerificationTokenService,
     @Inject(VERIFICATION_WEBHOOK)

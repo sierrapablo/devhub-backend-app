@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
-import type { VerificationWebhook } from '#src/contexts/user/application/ports/verification-webhook.js';
+import type { VerificationWebhook } from '#src/contexts/auth/application/ports/verification-webhook.js';
 
 @Injectable()
-export class N8nWebhookClient implements VerificationWebhook {
+export class N8nUserVerifyWebhookClient implements VerificationWebhook {
   async send(payload: {
     id: string;
     email: string;
