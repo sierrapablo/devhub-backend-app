@@ -82,7 +82,7 @@ export class UserService {
     try {
       const decoded = jwt.verify(token, jwtSecret);
       if (typeof decoded === 'string') {
-        throw new Error('Invalid token payload.');
+        throw new TypeError('Invalid token payload.');
       }
       payload = decoded;
     } catch {
