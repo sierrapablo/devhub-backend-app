@@ -4,24 +4,25 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { PrismaService } from '#src/lib/prisma/prisma.service.js';
+import { InjectRepository } from '@nestjs/typeorm';
+import { UserEntity } from '#src/lib/database/entities/user.entity.js';
 import axios from 'axios';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import type { UserAuth, UserPublic } from '#src/modules/user/user.types.js';
+import type { Repository } from 'typeorm';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>,
+  ) {}
 
   async createUser(username: string, email: string, password: string): Promise<UserPublic> {
-    const existingUser = await this.prisma.user.findFirst({
-      select: {
-        id: true,
-      },
-      where: {
-        OR: [{ email }, { username }],
-      },
+    const existingUser = await this.userRepository.findOne({
+      select: ['id'],
+      where: [{ email }, { username }],
     });
 
     if (existingUser) {
@@ -30,20 +31,13 @@ export class UserService {
 
     const passwordHash = await bcrypt.hash(password, 10);
 
-    const user = await this.prisma.user.create({
-      data: {
+    const user = await this.userRepository.save(
+      this.userRepository.create({
         username,
         email,
         password: passwordHash,
-      },
-      select: {
-        id: true,
-        username: true,
-        email: true,
-        active: true,
-        verified: true,
-      },
-    });
+      }),
+    );
 
     const jwtSecret = process.env.JWT_SECRET;
     if (!jwtSecret) {
@@ -68,7 +62,7 @@ export class UserService {
       verified: false,
     });
 
-    return user;
+    return this.toPublicUser(user);
   }
 
   async verifyUser(token: string): Promise<UserPublic> {
@@ -94,10 +88,8 @@ export class UserService {
       throw new UnauthorizedException('Invalid verification token.');
     }
 
-    const existingUser = await this.prisma.user.findUnique({
-      select: {
-        id: true,
-      },
+    const existingUser = await this.userRepository.findOne({
+      select: ['id'],
       where: { id: userId },
     });
 
@@ -105,17 +97,11 @@ export class UserService {
       throw new NotFoundException('User not found.');
     }
 
-    const user = await this.prisma.user.update({
-      data: { verified: true },
-      select: {
-        id: true,
-        username: true,
-        email: true,
-        active: true,
-        verified: true,
-      },
-      where: { id: userId },
-    });
+    await this.userRepository.update({ id: userId }, { verified: true });
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+    if (!user) {
+      throw new NotFoundException('User not found.');
+    }
 
     const webhookUrl = process.env.N8N_WEBHOOK_EMAIL_URL;
     if (!webhookUrl) {
@@ -130,18 +116,12 @@ export class UserService {
       verified: true,
     });
 
-    return user;
+    return this.toPublicUser(user);
   }
 
   async login(email: string, password: string): Promise<UserAuth> {
-    const user = await this.prisma.user.findUnique({
-      select: {
-        id: true,
-        email: true,
-        password: true,
-        active: true,
-        verified: true,
-      },
+    const user = await this.userRepository.findOne({
+      select: ['id', 'email', 'password', 'active', 'verified'],
       where: { email },
     });
 
@@ -169,6 +149,16 @@ export class UserService {
       id: user.id,
       email: user.email,
       token,
+    };
+  }
+
+  private toPublicUser(user: UserEntity): UserPublic {
+    return {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      active: user.active,
+      verified: user.verified,
     };
   }
 }
