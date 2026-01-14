@@ -4,9 +4,13 @@ import { Login } from '#src/contexts/auth/application/use-cases/login.js';
 import { Logout } from '#src/contexts/auth/application/use-cases/logout.js';
 import { ChangePassword } from '#src/contexts/auth/application/use-cases/change-password.js';
 import { RegisterUser } from '#src/contexts/auth/application/use-cases/register-user.js';
+import { RequestPasswordReset } from '#src/contexts/auth/application/use-cases/request-password-reset.js';
 import { RefreshAccessToken } from '#src/contexts/auth/application/use-cases/refresh-access-token.js';
+import { ResetPassword } from '#src/contexts/auth/application/use-cases/reset-password.js';
 import { VerifyUser } from '#src/contexts/auth/application/use-cases/verify-user.js';
 import {
+  PASSWORD_RESET_TOKEN_SERVICE,
+  PASSWORD_RESET_WEBHOOK,
   REFRESH_TOKEN_REPOSITORY,
   TOKEN_HASHER,
   TOKEN_SERVICE,
@@ -28,6 +32,8 @@ import { UserModule } from '#src/contexts/user/infra/user.module.js';
 import { JwtVerificationTokenService } from '#src/lib/jwt/verification-token.service.js';
 import { BcryptPasswordHasher } from '#src/lib/crypto/bcrypt-password.hasher.js';
 import { AuthGuard } from '#src/contexts/auth/infra/http/guards/auth.guard.js';
+import { JwtPasswordResetTokenService } from '#src/lib/jwt/password-reset-token.service.js';
+import { N8nPasswordResetWebhookClient } from '#src/lib/webhooks/n8n-password-reset-webhook.client.js';
 
 @Module({
   imports: [TypeOrmModule.forFeature([RefreshTokenEntity]), UserModule],
@@ -38,6 +44,8 @@ import { AuthGuard } from '#src/contexts/auth/infra/http/guards/auth.guard.js';
     Logout,
     ChangePassword,
     RegisterUser,
+    RequestPasswordReset,
+    ResetPassword,
     VerifyUser,
     AuthGuard,
     { provide: REFRESH_TOKEN_REPOSITORY, useClass: TypeOrmRefreshTokenRepository },
@@ -47,6 +55,8 @@ import { AuthGuard } from '#src/contexts/auth/infra/http/guards/auth.guard.js';
     { provide: PASSWORD_HASHER, useClass: BcryptPasswordHasher },
     { provide: VERIFICATION_TOKEN_SERVICE, useClass: JwtVerificationTokenService },
     { provide: VERIFICATION_WEBHOOK, useClass: N8nWebhookClient },
+    { provide: PASSWORD_RESET_TOKEN_SERVICE, useClass: JwtPasswordResetTokenService },
+    { provide: PASSWORD_RESET_WEBHOOK, useClass: N8nPasswordResetWebhookClient },
   ],
 })
 export class AuthModule {}

@@ -13,13 +13,17 @@ import { ChangePassword } from '#src/contexts/auth/application/use-cases/change-
 import { Login } from '#src/contexts/auth/application/use-cases/login.js';
 import { Logout } from '#src/contexts/auth/application/use-cases/logout.js';
 import { RegisterUser } from '#src/contexts/auth/application/use-cases/register-user.js';
+import { RequestPasswordReset } from '#src/contexts/auth/application/use-cases/request-password-reset.js';
 import { RefreshAccessToken } from '#src/contexts/auth/application/use-cases/refresh-access-token.js';
+import { ResetPassword } from '#src/contexts/auth/application/use-cases/reset-password.js';
 import { VerifyUser } from '#src/contexts/auth/application/use-cases/verify-user.js';
 import { AuthGuard } from '#src/contexts/auth/infra/http/guards/auth.guard.js';
 import { ChangePasswordDto } from '#src/contexts/auth/infra/http/dto/change-password.dto.js';
 import { CreateUserDto } from '#src/contexts/auth/infra/http/dto/create-user.dto.js';
 import { LoginDto } from '#src/contexts/auth/infra/http/dto/login.dto.js';
 import { RefreshTokenDto } from '#src/contexts/auth/infra/http/dto/refresh-token.dto.js';
+import { RequestPasswordResetDto } from '#src/contexts/auth/infra/http/dto/request-password-reset.dto.js';
+import { ResetPasswordDto } from '#src/contexts/auth/infra/http/dto/reset-password.dto.js';
 import { VerifyUserDto } from '#src/contexts/auth/infra/http/dto/verify-user.dto.js';
 
 @Controller('auth')
@@ -31,6 +35,8 @@ export class AuthController {
     private readonly registerUser: RegisterUser,
     private readonly verifyUser: VerifyUser,
     private readonly changePassword: ChangePassword,
+    private readonly requestPasswordReset: RequestPasswordReset,
+    private readonly resetPassword: ResetPassword,
   ) {}
 
   @Post('signup')
@@ -62,6 +68,16 @@ export class AuthController {
     }
 
     return this.changePassword.execute(userId, body.currentPassword, body.newPassword);
+  }
+
+  @Post('request-password-reset')
+  requestPasswordReset(@Body() body: RequestPasswordResetDto) {
+    return this.requestPasswordReset.execute(body.email);
+  }
+
+  @Post('reset-password')
+  resetPassword(@Body() body: ResetPasswordDto) {
+    return this.resetPassword.execute(body.token);
   }
 
   @Post('verify')
