@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Login } from '#src/contexts/auth/application/use-cases/login.js';
+import { Logout } from '#src/contexts/auth/application/use-cases/logout.js';
 import { RefreshAccessToken } from '#src/contexts/auth/application/use-cases/refresh-access-token.js';
 import {
   REFRESH_TOKEN_REPOSITORY,
@@ -20,6 +21,7 @@ import { UserModule } from '#src/contexts/user/infra/user.module.js';
   providers: [
     Login,
     RefreshAccessToken,
+    Logout,
     { provide: REFRESH_TOKEN_REPOSITORY, useClass: TypeOrmRefreshTokenRepository },
     { provide: TOKEN_SERVICE, useClass: JwtTokenService },
     { provide: TOKEN_HASHER, useClass: BcryptTokenHasher },
