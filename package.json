@@ -8,7 +8,11 @@
     "start": "nest start",
     "start:dev": "nest start --watch",
     "build": "nest build",
-    "start:prod": "node dist/main.js"
+    "start:prod": "node dist/main.js",
+    "db:migration:run": "pnpm exec typeorm migration:run -d dist/lib/database/data-source.js",
+    "db:migration:revert": "pnpm exec typeorm migration:revert -d dist/lib/database/data-source.js",
+    "db:migration:generate": "pnpm exec typeorm migration:generate -d dist/lib/database/data-source.js",
+    "db:migration:create": "pnpm exec typeorm migration:create"
   },
   "keywords": [],
   "author": "Pablo Sierra Lorente",
