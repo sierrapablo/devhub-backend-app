@@ -30,6 +30,28 @@ export class JwtTokenService implements TokenService {
     });
   }
 
+  verifyAccessToken(token: string): { userId: string; email: string; expiresAt: Date } {
+    const jwtSecret = process.env.JWT_SECRET;
+    if (!jwtSecret) {
+      throw new Error('JWT_SECRET not defined in .env');
+    }
+
+    const decoded = jwt.verify(token, jwtSecret);
+    if (typeof decoded === 'string') {
+      throw new TypeError('Invalid token payload.');
+    }
+
+    const userId = String(decoded.sub ?? '');
+    const email = String(decoded.email ?? '');
+    const exp = Number(decoded.exp ?? 0);
+
+    if (!userId || !email || !exp) {
+      throw new TypeError('Invalid token payload.');
+    }
+
+    return { userId, email, expiresAt: new Date(exp * 1000) };
+  }
+
   verifyRefreshToken(token: string): { userId: string; tokenId: string; expiresAt: Date } {
     const refreshSecret = process.env.JWT_REFRESH_SECRET ?? process.env.JWT_SECRET;
     if (!refreshSecret) {

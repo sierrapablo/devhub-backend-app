@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Login } from '#src/contexts/auth/application/use-cases/login.js';
 import { Logout } from '#src/contexts/auth/application/use-cases/logout.js';
+import { ChangePassword } from '#src/contexts/auth/application/use-cases/change-password.js';
 import { RegisterUser } from '#src/contexts/auth/application/use-cases/register-user.js';
 import { RefreshAccessToken } from '#src/contexts/auth/application/use-cases/refresh-access-token.js';
 import { VerifyUser } from '#src/contexts/auth/application/use-cases/verify-user.js';
@@ -26,6 +27,7 @@ import { N8nWebhookClient } from '#src/lib/webhooks/n8n-webhook.client.js';
 import { UserModule } from '#src/contexts/user/infra/user.module.js';
 import { JwtVerificationTokenService } from '#src/lib/jwt/verification-token.service.js';
 import { BcryptPasswordHasher } from '#src/lib/crypto/bcrypt-password.hasher.js';
+import { AuthGuard } from '#src/contexts/auth/infra/http/guards/auth.guard.js';
 
 @Module({
   imports: [TypeOrmModule.forFeature([RefreshTokenEntity]), UserModule],
@@ -34,8 +36,10 @@ import { BcryptPasswordHasher } from '#src/lib/crypto/bcrypt-password.hasher.js'
     Login,
     RefreshAccessToken,
     Logout,
+    ChangePassword,
     RegisterUser,
     VerifyUser,
+    AuthGuard,
     { provide: REFRESH_TOKEN_REPOSITORY, useClass: TypeOrmRefreshTokenRepository },
     { provide: USER_AUTH_REPOSITORY, useExisting: USER_REPOSITORY },
     { provide: TOKEN_SERVICE, useClass: JwtTokenService },

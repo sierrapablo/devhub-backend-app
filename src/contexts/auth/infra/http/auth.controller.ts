@@ -1,9 +1,22 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Query,
+  Req,
+  UnauthorizedException,
+  UseGuards,
+} from '@nestjs/common';
+import type { Request } from 'express';
+import { ChangePassword } from '#src/contexts/auth/application/use-cases/change-password.js';
 import { Login } from '#src/contexts/auth/application/use-cases/login.js';
 import { Logout } from '#src/contexts/auth/application/use-cases/logout.js';
 import { RegisterUser } from '#src/contexts/auth/application/use-cases/register-user.js';
 import { RefreshAccessToken } from '#src/contexts/auth/application/use-cases/refresh-access-token.js';
 import { VerifyUser } from '#src/contexts/auth/application/use-cases/verify-user.js';
+import { AuthGuard } from '#src/contexts/auth/infra/http/guards/auth.guard.js';
+import { ChangePasswordDto } from '#src/contexts/auth/infra/http/dto/change-password.dto.js';
 import { CreateUserDto } from '#src/contexts/auth/infra/http/dto/create-user.dto.js';
 import { LoginDto } from '#src/contexts/auth/infra/http/dto/login.dto.js';
 import { RefreshTokenDto } from '#src/contexts/auth/infra/http/dto/refresh-token.dto.js';
@@ -17,6 +30,7 @@ export class AuthController {
     private readonly logoutUseCase: Logout,
     private readonly registerUser: RegisterUser,
     private readonly verifyUser: VerifyUser,
+    private readonly changePassword: ChangePassword,
   ) {}
 
   @Post('signup')
@@ -37,6 +51,17 @@ export class AuthController {
   @Post('logout')
   logout(@Body() body: RefreshTokenDto) {
     return this.logoutUseCase.execute(body.refreshToken);
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('change-password')
+  changePassword(@Req() req: Request, @Body() body: ChangePasswordDto) {
+    const userId = (req as Request & { user?: { id: string } }).user?.id;
+    if (!userId) {
+      throw new UnauthorizedException('Missing authenticated user.');
+    }
+
+    return this.changePassword.execute(userId, body.currentPassword, body.newPassword);
   }
 
   @Post('verify')

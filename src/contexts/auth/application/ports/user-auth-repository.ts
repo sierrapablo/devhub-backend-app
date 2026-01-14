@@ -6,4 +6,5 @@ export interface UserAuthRepository {
   findByEmailOrUsername(email: string, username: string): Promise<User | null>;
   create(user: Omit<User, 'id'>): Promise<User>;
   updateVerified(id: string, verified: boolean): Promise<User | null>;
+  updatePassword(id: string, password: string): Promise<User | null>;
 }

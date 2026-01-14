@@ -35,4 +35,9 @@ export class TypeOrmUserRepository implements UserRepository {
     await this.repository.update({ id }, { verified });
     return this.repository.findOne({ where: { id } });
   }
+
+  async updatePassword(id: string, password: string): Promise<User | null> {
+    await this.repository.update({ id }, { password });
+    return this.repository.findOne({ where: { id } });
+  }
 }
