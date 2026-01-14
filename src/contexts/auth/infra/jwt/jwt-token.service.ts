@@ -1,7 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import jwt from 'jsonwebtoken';
 import type { TokenService } from '#src/contexts/auth/application/ports/token-service.js';
-import { ACCESS_TOKEN_TTL } from '#src/contexts/auth/application/auth.constants.js';
+import {
+  ACCESS_TOKEN_TTL_MS,
+  REFRESH_TOKEN_TTL_MS,
+} from '#src/contexts/auth/application/auth.constants.js';
 
 @Injectable()
 export class JwtTokenService implements TokenService {
@@ -12,7 +15,7 @@ export class JwtTokenService implements TokenService {
     }
 
     return jwt.sign({ sub: payload.userId, email: payload.email }, jwtSecret, {
-      expiresIn: ACCESS_TOKEN_TTL,
+      expiresIn: Math.floor(ACCESS_TOKEN_TTL_MS / 1000),
     });
   }
 
@@ -23,7 +26,7 @@ export class JwtTokenService implements TokenService {
     }
 
     return jwt.sign({ sub: payload.userId, jti: payload.tokenId }, refreshSecret, {
-      expiresIn: '30d',
+      expiresIn: Math.floor(REFRESH_TOKEN_TTL_MS / 1000),
     });
   }
 
