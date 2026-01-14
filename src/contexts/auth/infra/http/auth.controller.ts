@@ -34,9 +34,9 @@ export class AuthController {
     private readonly logoutUseCase: Logout,
     private readonly registerUser: RegisterUser,
     private readonly verifyUser: VerifyUser,
-    private readonly changePassword: ChangePassword,
-    private readonly requestPasswordReset: RequestPasswordReset,
-    private readonly resetPassword: ResetPassword,
+    private readonly changePasswordUseCase: ChangePassword,
+    private readonly requestPasswordResetUseCase: RequestPasswordReset,
+    private readonly resetPasswordUseCase: ResetPassword,
   ) {}
 
   @Post('signup')
@@ -67,17 +67,17 @@ export class AuthController {
       throw new UnauthorizedException('Missing authenticated user.');
     }
 
-    return this.changePassword.execute(userId, body.currentPassword, body.newPassword);
+    return this.changePasswordUseCase.execute(userId, body.currentPassword, body.newPassword);
   }
 
   @Post('request-password-reset')
   requestPasswordReset(@Body() body: RequestPasswordResetDto) {
-    return this.requestPasswordReset.execute(body.email);
+    return this.requestPasswordResetUseCase.execute(body.email);
   }
 
   @Post('reset-password')
   resetPassword(@Body() body: ResetPasswordDto) {
-    return this.resetPassword.execute(body.token);
+    return this.resetPasswordUseCase.execute(body.token);
   }
 
   @Post('verify')
