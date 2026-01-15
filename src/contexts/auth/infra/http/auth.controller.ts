@@ -23,7 +23,6 @@ import { CreateUserDto } from '#src/contexts/auth/infra/http/dto/create-user.dto
 import { LoginDto } from '#src/contexts/auth/infra/http/dto/login.dto.js';
 import { RefreshTokenDto } from '#src/contexts/auth/infra/http/dto/refresh-token.dto.js';
 import { RequestPasswordResetDto } from '#src/contexts/auth/infra/http/dto/request-password-reset.dto.js';
-import { ResetPasswordDto } from '#src/contexts/auth/infra/http/dto/reset-password.dto.js';
 import { VerifyUserDto } from '#src/contexts/auth/infra/http/dto/verify-user.dto.js';
 
 @Controller('auth')
@@ -75,9 +74,9 @@ export class AuthController {
     return this.requestPasswordResetUseCase.execute(body.email);
   }
 
-  @Post('reset-password')
-  resetPassword(@Body() body: ResetPasswordDto) {
-    return this.resetPasswordUseCase.execute(body.token);
+  @Get('reset-password')
+  resetPassword(@Query('token') token: string) {
+    return this.resetPasswordUseCase.execute(token);
   }
 
   @Post('verify')
