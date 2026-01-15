@@ -52,7 +52,8 @@ pipeline {
             -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
             -Dsonar.projectVersion=${env.VERSION} \
             -Dsonar.sources=. \
-            -Dsonar.coverage.exclusions=src/**
+            -Dsonar.coverage.exclusions=src/** \
+            -Dsonar.typescript.tsconfigPath=tsconfig.json
           """
         }
       }
