@@ -21,7 +21,7 @@ export class RequestPasswordReset {
 
   async execute(email: string): Promise<void> {
     const user = await this.userRepository.findByEmail(email);
-    if (!user || !user.active) {
+    if (!user?.active) {
       return;
     }
 

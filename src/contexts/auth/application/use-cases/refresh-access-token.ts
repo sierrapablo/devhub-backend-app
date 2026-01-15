@@ -9,8 +9,8 @@ import {
   REFRESH_ROTATION_THRESHOLD_MS,
   REFRESH_TOKEN_TTL_MS,
 } from '#src/contexts/auth/application/auth.constants.js';
-import { USER_AUTH_REPOSITORY } from '#src/contexts/auth/application/ports/providers.js';
 import {
+  USER_AUTH_REPOSITORY,
   REFRESH_TOKEN_REPOSITORY,
   TOKEN_HASHER,
   TOKEN_SERVICE,

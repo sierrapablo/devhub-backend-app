@@ -10,8 +10,6 @@ import { REFRESH_TOKEN_TTL_MS } from '#src/contexts/auth/application/auth.consta
 import {
   PASSWORD_HASHER,
   USER_AUTH_REPOSITORY,
-} from '#src/contexts/auth/application/ports/providers.js';
-import {
   REFRESH_TOKEN_REPOSITORY,
   TOKEN_HASHER,
   TOKEN_SERVICE,
