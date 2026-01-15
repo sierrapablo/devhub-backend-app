@@ -76,6 +76,10 @@ export class AuthController {
 
   @Get('reset-password')
   resetPassword(@Query('token') token: string) {
+    if (!token || !token.trim()) {
+      throw new UnauthorizedException('Missing reset token.');
+    }
+
     return this.resetPasswordUseCase.execute(token);
   }
 
