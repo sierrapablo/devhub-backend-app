@@ -5,11 +5,7 @@ import { UserEntity } from '#src/contexts/user/infra/typeorm/user.entity.js';
 import { TypeOrmUserRepository } from '#src/contexts/user/infra/typeorm/user.repository.js';
 @Module({
   imports: [TypeOrmModule.forFeature([UserEntity])],
-  providers: [
-    { provide: USER_REPOSITORY, useClass: TypeOrmUserRepository },
-  ],
-  exports: [
-    USER_REPOSITORY,
-  ],
+  providers: [{ provide: USER_REPOSITORY, useClass: TypeOrmUserRepository }],
+  exports: [USER_REPOSITORY],
 })
 export class UserModule {}
