@@ -14,13 +14,12 @@ import {
   REFRESH_TOKEN_REPOSITORY,
   TOKEN_HASHER,
   TOKEN_SERVICE,
-} from '#src/contexts/auth/application/ports/providers.js';
-import {
   PASSWORD_HASHER,
   USER_AUTH_REPOSITORY,
   VERIFICATION_TOKEN_SERVICE,
   VERIFICATION_WEBHOOK,
 } from '#src/contexts/auth/application/ports/providers.js';
+
 import { USER_REPOSITORY } from '#src/contexts/user/application/ports/providers.js';
 import { RefreshTokenEntity } from '#src/contexts/auth/infra/typeorm/refresh-token.entity.js';
 import { TypeOrmRefreshTokenRepository } from '#src/contexts/auth/infra/typeorm/refresh-token.repository.js';
